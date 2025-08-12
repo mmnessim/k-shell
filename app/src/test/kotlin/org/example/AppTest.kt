@@ -5,14 +5,30 @@ package org.example
 
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import kotlin.test.assertEquals
+import kotlin.test.*
+
 
 class AppTest {
     @Test
     fun testParse() {
-        val p = ParsedInput("cat")
+        var p = ParsedInput("cat")
         assertEquals("cat", p.command)
         assert(p.flags.isEmpty())
         assert(p.arguments.isEmpty())
+
+        p = ParsedInput("cat -abcd")
+        assertEquals("cat", p.command)
+        assertTrue(p.flags.contentEquals(charArrayOf('a', 'b', 'c', 'd')))
+        assert(p.arguments.isEmpty())
+
+        p = ParsedInput("cat flake.nix run.sh")
+        assertEquals("cat", p.command)
+        assert(p.flags.isEmpty())
+        assertTrue(p.arguments.contentEquals(arrayOf("flake.nix", "run.sh")))
+
+        p = ParsedInput("cat -abcd flake.nix run.sh")
+        assertEquals("cat", p.command)
+        assertTrue(p.flags.contentEquals(charArrayOf('a', 'b', 'c', 'd')))
+        assertTrue(p.arguments.contentEquals(arrayOf("flake.nix", "run.sh")))
     }
 }
