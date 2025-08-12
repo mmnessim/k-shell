@@ -44,5 +44,29 @@ class ShellFunctions {
         Chess().getStats()
         return ""
     }
+
+    fun ls(p: ParsedInput): String {
+        val filePath = if (p.arguments.isNotEmpty()) p.arguments[0] else "."
+        try {
+            var contents = ""
+            val dir = File(filePath)
+            val files = dir.listFiles()
+
+            if (files != null) {
+                for (file in files) {
+                    if (file.isDirectory) {
+                        contents += "\u001B[32m" + file.name + "\n"
+                    } else {
+                        contents += "\u001B[0m" + file.name + "\n"
+                    }
+
+                }
+            }
+            contents += "\u001B[0m"
+            return contents
+        } catch (e: Exception) {
+            return e.toString()
+        }
+    }
 }
 

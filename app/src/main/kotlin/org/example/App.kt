@@ -51,6 +51,7 @@ class ParsedInput {
         when (command.lowercase()) {
             "cat" -> return ShellFunctions().cat(this)
             "stats" -> return ShellFunctions().stats()
+            "ls" -> return ShellFunctions().ls(this)
             "exit" -> System.exit(0)
             else -> return ""
         }
