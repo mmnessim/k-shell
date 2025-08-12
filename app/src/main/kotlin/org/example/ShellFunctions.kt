@@ -68,5 +68,9 @@ class ShellFunctions {
             return e.toString()
         }
     }
+
+    fun unknownCommand(p: ParsedInput): String {
+        return "Unrecognized command: ${p.command}"
+    }
 }
 

@@ -53,7 +53,8 @@ class ParsedInput {
             "stats" -> return ShellFunctions().stats()
             "ls" -> return ShellFunctions().ls(this)
             "exit" -> System.exit(0)
-            else -> return ""
+            "" -> return ""
+            else -> return ShellFunctions().unknownCommand(this)
         }
         return ""
     }
