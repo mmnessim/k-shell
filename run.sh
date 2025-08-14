@@ -5,9 +5,10 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$1" = "run" ]; then
-    ./gradlew build
-    ./gradlew installDist
-    app/build/install/app/bin/app
+    ./gradlew build || exit 1
+    ./gradlew installDist || exit 1
+
+    app/build/install/app/bin/app || exit 1
 fi
 
 if [ "$1" = "build" ]; then
