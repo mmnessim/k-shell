@@ -6,7 +6,7 @@ package org.example
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.*
-
+import java.io.File
 
 class AppTest {
     @Test
@@ -30,5 +30,18 @@ class AppTest {
         assertEquals("cat", p.command)
         assertTrue(p.flags.contentEquals(charArrayOf('a', 'b', 'c', 'd')))
         assertTrue(p.arguments.contentEquals(arrayOf("flake.nix", "run.sh")))
+    }
+
+    @Test
+    fun testCat() {
+        //var cwd = System.getProperty("user.dir")
+        //println(cwd)
+        val p = ParsedInput("cat ../run.sh")
+        val output = ShellFunctions().cat(p)
+
+        val expectedFile = File("../run.sh")
+        val expectedText = expectedFile.readText()
+
+        assertEquals(expectedText, output)
     }
 }
