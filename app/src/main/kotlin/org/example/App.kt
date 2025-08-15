@@ -66,14 +66,23 @@ fun main() {
             continue
         }
         val p = ParsedInput(input)
+
+        // This chunk of code will need to be rewritten eventually
+        // All ShellFunctions will eventually return a pair of
+        // cwd and their output
+        var output: String
         if (p.command == "cd") {
-            cwd = ShellFunctions().cd(cwd, p)
+            val pair = ShellFunctions().cd(cwd, p)
+            cwd = pair.first
+            output = pair.second
+        } else {
+            output = p.dispatchCommand(cwd)
         }
-        val output = p.dispatchCommand(cwd)
+
+
         if (output.isEmpty()) {
             continue
         }
         println(output)
     }
-
 }

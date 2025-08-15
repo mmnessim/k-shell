@@ -96,17 +96,21 @@ class ShellFunctions {
      * @param p arguments and flags
      * @return the new cwd to display in prompt and pass to other functions as needed
      */
-    fun cd(cwd: String, p: ParsedInput): String {
+    fun cd(cwd: String, p: ParsedInput): Pair<String, String> {
         val newDir = File(cwd, p.arguments[0]).canonicalFile
 
         return if (newDir.exists() && newDir.isDirectory) {
-                newDir.toString()
+            Pair(newDir.toString(), "")
         } else {
-            println("No such directory \"${p.arguments[0]}\"\n")
-            cwd
+            Pair(cwd, "No such directory \"${p.arguments[0]}\"")
         }
     }
 
+    /**
+     * Display a message for unsupported or unknown commands
+     * @param p ParsedInput
+     * @return error String
+     */
     fun unknownCommand(p: ParsedInput): String {
         return "Unrecognized command: ${p.command}"
     }
