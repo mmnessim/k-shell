@@ -45,8 +45,8 @@ class ShellFunctions {
         return ""
     }
 
-    fun ls(p: ParsedInput): String {
-        val filePath = if (p.arguments.isNotEmpty()) p.arguments[0] else "."
+    fun ls(cwd: String, p: ParsedInput): String {
+        val filePath = if (p.arguments.isNotEmpty()) p.arguments[0] else cwd
         try {
             var contents = ""
             val dir = File(filePath)
@@ -66,6 +66,16 @@ class ShellFunctions {
             return contents
         } catch (e: Exception) {
             return e.toString()
+        }
+    }
+
+    fun cd(cwd: String, p: ParsedInput): String {
+        val newDir = File(cwd, p.arguments[0]).canonicalFile
+
+        return if (newDir.exists() && newDir.isDirectory) {
+                newDir.toString()
+        } else {
+            "No such directory: ${p.arguments[0]}"
         }
     }
 

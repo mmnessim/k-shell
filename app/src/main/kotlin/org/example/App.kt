@@ -1,12 +1,5 @@
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
-
 class ParsedInput {
     var command: String = ""
     var flags: CharArray = charArrayOf()
@@ -44,15 +37,16 @@ class ParsedInput {
         return input.startsWith("-")
     }
 
-    fun dispatchCommand(): String {
+    fun dispatchCommand(cwd: String): String {
         if (command.isEmpty()) {
             return ""
         }
         when (command.lowercase()) {
             "cat" -> return ShellFunctions().cat(this)
             "stats" -> return ShellFunctions().stats()
-            "ls" -> return ShellFunctions().ls(this)
+            "ls" -> return ShellFunctions().ls(cwd, this)
             "exit" -> System.exit(0)
+            "cd" -> return ""
             "" -> return ""
             else -> return ShellFunctions().unknownCommand(this)
         }
@@ -62,14 +56,20 @@ class ParsedInput {
 }
 
 fun main() {
+    var cwd = System.getProperty("user.dir")
+
     while (true) {
-        print("k-shell: ")
+        val prompt = cwd + " \$k-shell: "
+        print(prompt)
         val input = readLine() ?: ""
         if (input.isEmpty()) {
             continue
         }
         val p = ParsedInput(input)
-        val output = p.dispatchCommand()
+        if (p.command == "cd") {
+            cwd = ShellFunctions().cd(cwd, p)
+        }
+        val output = p.dispatchCommand(cwd)
         if (output.isEmpty()) {
             continue
         }
