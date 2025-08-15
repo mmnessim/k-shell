@@ -102,7 +102,8 @@ class ShellFunctions {
         return if (newDir.exists() && newDir.isDirectory) {
                 newDir.toString()
         } else {
-            "No such directory: ${p.arguments[0]}"
+            println("No such directory \"${p.arguments[0]}\"\n")
+            cwd
         }
     }
 
