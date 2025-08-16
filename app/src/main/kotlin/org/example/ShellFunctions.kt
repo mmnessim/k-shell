@@ -73,14 +73,18 @@ class ShellFunctions {
             val dir = File(filePath)
             val files = dir.listFiles()
 
+            val showAll = p.flags.contains('a')
+
             if (files != null) {
                 for (file in files) {
+                    if (file.name.startsWith(".") && !showAll) {
+                        continue
+                    }
                     if (file.isDirectory) {
                         contents += "\u001B[32m" + file.name + "\n"
                     } else {
                         contents += "\u001B[0m" + file.name + "\n"
                     }
-
                 }
             }
             contents += "\u001B[0m"
