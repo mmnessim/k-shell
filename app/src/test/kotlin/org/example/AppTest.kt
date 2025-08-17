@@ -34,10 +34,10 @@ class AppTest {
 
     @Test
     fun testCat() {
-        //var cwd = System.getProperty("user.dir")
+        var cwd = System.getProperty("user.dir")
         //println(cwd)
         val p = ParsedInput("cat ../run.sh")
-        val output = ShellFunctions().cat(p)
+        val (_, output) = ShellFunctions().cat(cwd, p)
 
         val expectedFile = File("../run.sh")
         val expectedText = expectedFile.readText()

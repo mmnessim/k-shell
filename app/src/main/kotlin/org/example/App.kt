@@ -37,20 +37,21 @@ class ParsedInput {
         return input.startsWith("-")
     }
 
-    fun dispatchCommand(cwd: String): String {
+    fun dispatchCommand(cwd: String): Pair<String, String> {
         if (command.isEmpty()) {
-            return ""
+            return Pair(cwd, "")
         }
         when (command.lowercase()) {
-            "cat" -> return ShellFunctions().cat(this)
-            "stats" -> return ShellFunctions().stats()
-            "ls" -> return ShellFunctions().ls(cwd, this)
+            "cat" -> return ShellFunctions().cat(cwd, this)
+            "stats" -> return Pair(cwd, ShellFunctions().stats())
+            "ls" -> return Pair(cwd, ShellFunctions().ls(cwd, this))
             "exit" -> System.exit(0)
-            "cd" -> return ""
-            "" -> return ""
-            else -> return ShellFunctions().unknownCommand(this)
+            "cd" -> return ShellFunctions().cd(cwd, this)
+            "help" -> return Pair(cwd, ShellFunctions().help())
+            "" -> return Pair(cwd, "")
+            else -> return Pair(cwd, ShellFunctions().unknownCommand(this))
         }
-        return ""
+        return Pair(cwd, "")
     }
 
 }
@@ -59,7 +60,7 @@ fun main() {
     var cwd = System.getProperty("user.dir")
 
     while (true) {
-        val prompt = cwd + " \$k-shell: "
+        val prompt = "[" + cwd + "]" + " \$k-shell: "
         print(prompt)
         val input = readLine() ?: ""
         if (input.isEmpty()) {
@@ -71,14 +72,10 @@ fun main() {
         // All ShellFunctions will eventually return a pair of
         // cwd and their output
         var output: String
-        if (p.command == "cd") {
-            val pair = ShellFunctions().cd(cwd, p)
-            cwd = pair.first
-            output = pair.second
-        } else {
-            output = p.dispatchCommand(cwd)
-        }
 
+        val pair = p.dispatchCommand(cwd)
+        cwd = pair.first
+        output = pair.second
 
         if (output.isEmpty()) {
             continue

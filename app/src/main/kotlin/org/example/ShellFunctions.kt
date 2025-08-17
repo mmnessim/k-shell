@@ -16,9 +16,9 @@ class ShellFunctions {
      * @param p arguments and flags
      * TODO handle multiple arguments
      */
-    fun cat(p: ParsedInput): String {
+    fun cat(cwd: String, p: ParsedInput): Pair<String, String> {
         if (p.arguments.isEmpty()) {
-            return ""
+            return Pair(cwd, "")
         }
 
         val flagSet = p.flags.toSet()
@@ -45,9 +45,9 @@ class ShellFunctions {
                     contents += outputLine + "\n"
                 }
             }
-            return contents
+            return Pair(cwd, contents)
         } catch (e: Exception) {
-            return "Error: ${e.message}"
+            return Pair(cwd, "Error: ${e.message}")
         }
     }
 
@@ -108,6 +108,23 @@ class ShellFunctions {
         } else {
             Pair(cwd, "No such directory \"${p.arguments[0]}\"")
         }
+    }
+
+    fun help(): String {
+        return """
+            Available commands:
+              cat [options] <file>      - Display contents of a file
+                 -n                    - Show line numbers
+                 -u                    - Uppercase output
+                 -E                    - Show $ at end of each line
+              ls [options] [dir]       - List directory contents
+                 -a                    - Show hidden files
+              cd <dir>                 - Change current directory
+              stats                    - Show chess stats
+              help                     - Show this help message
+
+            Use flags by prefixing them with '-' (e.g., cat -n file.txt).
+            """.trimIndent()
     }
 
     /**
