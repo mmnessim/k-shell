@@ -102,6 +102,41 @@ class ShellFunctions {
         }
     }
 
+    /**
+     * touch builtin function
+     * Create a new file
+     * @param cwd
+     * @param p arguments and flags
+     * @return cwd, output: String
+     */
+    fun touch(cwd: String, p: ParsedInput): Pair<String, String> {
+        try {
+            File(p.arguments[0]).createNewFile()
+            return Pair(cwd, "")
+        } catch (e: Exception) {
+            return Pair(cwd, e.toString())
+        }
+    }
+
+    /**
+     * rm builtin function
+     * Delete a file or (TODO) directory
+     * @param cwd
+     * @param p arguments and flags
+     * @return cwd, output: String
+     */
+    fun rm(cwd: String, p: ParsedInput): Pair<String, String> {
+        try {
+            File(p.arguments[0]).delete()
+            return Pair(cwd, "")
+        } catch (e: Exception) {
+            return Pair(cwd, e.toString())
+        }
+    }
+
+    /**
+     * Display help message
+     */
     fun help(): String {
         return """
             Available commands:
@@ -112,7 +147,8 @@ class ShellFunctions {
               ls [options] [dir]       - List directory contents
                  -a                    - Show hidden files
               cd <dir>                 - Change current directory
-              stats                    - Show chess stats
+              touch <filename>         - Create new file
+              rm <filename>            - Delete file
               help                     - Show this help message
 
             Use flags by prefixing them with '-' (e.g., cat -n file.txt).

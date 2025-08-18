@@ -42,13 +42,15 @@ class ParsedInput {
             return Pair(cwd, "")
         }
         when (command.lowercase()) {
-            "cat" -> return ShellFunctions().cat(cwd, this)
-            "ls" -> return Pair(cwd, ShellFunctions().ls(cwd, this))
-            "exit" -> System.exit(0)
-            "cd" -> return ShellFunctions().cd(cwd, this)
-            "help" -> return Pair(cwd, ShellFunctions().help())
-            "" -> return Pair(cwd, "")
-            else -> return Pair(cwd, ShellFunctions().unknownCommand(this))
+            "cat"   -> return ShellFunctions().cat(cwd, this)
+            "ls"    -> return Pair(cwd, ShellFunctions().ls(cwd, this))
+            "exit"  -> System.exit(0)
+            "cd"    -> return ShellFunctions().cd(cwd, this)
+            "touch" -> return ShellFunctions().touch(cwd, this)
+            "rm"    -> return ShellFunctions().rm(cwd, this)
+            "help"  -> return Pair(cwd, ShellFunctions().help())
+            ""      -> return Pair(cwd, "")
+            else    -> return Pair(cwd, ShellFunctions().unknownCommand(this))
         }
         return Pair(cwd, "")
     }
