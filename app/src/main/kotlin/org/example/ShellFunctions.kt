@@ -52,14 +52,6 @@ class ShellFunctions {
     }
 
     /**
-     * Simply displays my chess stats, not really related to the rest of the project
-     */
-    fun stats(): String {
-        Chess().getStats()
-        return ""
-    }
-
-    /**
      * Recreation of ls builtin
      * @param cwd is required in order to display the right output after changing directory
      * @param p the arguments and flags

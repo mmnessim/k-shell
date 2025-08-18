@@ -43,7 +43,6 @@ class ParsedInput {
         }
         when (command.lowercase()) {
             "cat" -> return ShellFunctions().cat(cwd, this)
-            "stats" -> return Pair(cwd, ShellFunctions().stats())
             "ls" -> return Pair(cwd, ShellFunctions().ls(cwd, this))
             "exit" -> System.exit(0)
             "cd" -> return ShellFunctions().cd(cwd, this)
